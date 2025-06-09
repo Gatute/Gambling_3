@@ -1,0 +1,10 @@
+<h1>Agregar Dinero</h1>
+<form method="POST">
+    {% csrf_token %}
+    <label for="amount">Monto a agregar:</label>
+    <input type="number" name="amount" id="amount" min="1" required>
+    <button type="submit">Agregar dinero</button>
+    {% if error %}
+        <p style="color: red;">{{ error }}</p>
+    {% endif %}
+</form>

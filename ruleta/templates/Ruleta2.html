@@ -1,0 +1,157 @@
+{%load static%}
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ruleta de Apuestas</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+        }
+        .header {
+            display: flex;
+            justify-content: flex-end;
+            padding: 10px;
+            background-color: #222;
+            color: white;
+        }
+        .header a {
+            color: white;
+            text-decoration: none;
+            margin: 0 10px;
+            font-size: 18px;
+        }
+        .container {
+            display: flex;
+            width: 100%;
+            height: calc(100vh - 50px);
+            align-items: center;
+            justify-content: between;
+        
+        }
+        
+        .ruleta {
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            border: 5px solid white;
+            transition: transform 4s ease-out;
+        }
+        .ruleta-container {
+            position: relative;
+            width: 300px;
+            height: 300px;
+            margin: auto;
+        }
+
+        .left-section {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+        .right-section {
+            flex: 1;
+            text-align: center;
+            background: white;
+            padding: 20px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        canvas {
+            border: 3px solid black;
+        }
+        button {
+            margin-top: 10px;
+            padding: 10px 20px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+        .flecha {
+            position: absolute;
+            top: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 0;
+            height: 0;
+            border-left: 10px solid transparent;
+            border-right: 10px solid transparent;
+            border-bottom: 20px solid red;
+        }
+        .h1{
+            text-align: center
+            margin-bottom: 20px
+        }
+
+    </style>
+</head>
+<body>
+    <div class="header">
+    {% if user.is_authenticated %}
+        <span>Bienvenido {{ user.username }}</span>
+        <a href="{% url 'logout' %}">Cerrar sesión</a>
+    {% else %}
+        <a href="{% url 'login' %}">Iniciar sesión</a>
+        <a href="{% url 'signup' %}">Regístrate</a>
+    {% endif %}
+
+    </div>
+
+    <div class="container">
+        <!-- Sección Izquierda: Ruleta y Apuesta -->
+        <div class="left-section">
+            <h1>🎰 Ruleta de Apuestas 🎰</h1>
+            <div class="ruleta-container">
+                <div class="flecha"></div>
+                <img id="ruleta" class="ruleta" src="{% static 'img/Ruleta.png' %}" alt="Ruleta">
+            </div>
+            <br>
+            
+            {% if user.is_authenticated %}
+            
+            <label for="monto">💰 Monto a apostar: </label>
+            <input type="number" id="monto" placeholder="Ingresa el monto" min="1">
+            <br>
+            
+          
+
+            
+            <button onclick="girarRuleta()">🎡 Girar Ruleta</button>
+            <h2 id="resultado"></h2>
+
+            {% else %}
+            
+            
+            <p style="color: red;">Debes <a href="{% url 'login' %}">iniciar sesión</a> para girar la ruleta.</p>
+
+            {% endif %}
+
+        </div>
+        <div class="right-section"> 
+            <h2>ℹ Información del Usuario</h2>
+            <p><strong>💰 Dinero disponible:</strong> $<span id="dinero">{{ user.perfilusuario.saldo}}</span></p>
+            <p><strong>🏆 Dinero ganado:</strong> $<span id="ganado">0</span></p>
+            <a href="{% url 'add_money' %}">Agregar dinero</a>
+        </div>
+
+
+    <script>
+        function girarRuleta() {
+            let ruleta = document.getElementById("ruleta");
+            let giro = Math.floor(Math.random() * 3600) + 720; // Gira entre 720 y 4320 grados
+            ruleta.style.transform = `rotate(${giro}deg)`;
+            
+            setTimeout(() => {
+                document.getElementById("resultado").innerText = "¡Resultado mostrado aquí!";
+            }, 3000);
+        }
+    </script>
+
+</body>
+</html>

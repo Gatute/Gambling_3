@@ -1,0 +1,10 @@
+<form method="post">
+    {% csrf_token %}
+    <input type="number" name="monto" placeholder="Monto a apostar" required>
+    <button type="submit">Apostar</button>
+</form>
+
+{% if resultado %}
+    <p>Resultado: {{ resultado }}</p>
+    <p>Ganancia: {{ ganancia }}</p>
+{% endif %}

@@ -1,0 +1,7 @@
+{% if success %}
+    <p>¡Pago exitoso! Se han agregado ${{ amount }} a tu saldo.</p>
+    <a href="/">Volver al inicio</a>
+{% else %}
+    <p>El pago no fue autorizado. Por favor, inténtalo de nuevo.</p>
+    <a href="/add-money/">Intentar de nuevo</a>
+{% endif %}
